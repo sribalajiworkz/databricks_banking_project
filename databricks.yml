@@ -4,12 +4,6 @@ bundle:
 include:
   - resources/*.yml
 
-permissions:
-  - service_principal_name: 6127b219-86e3-4134-a5be-b31553ffa6fa
-    level: CAN_MANAGE
-  - user_name: sri@vdotx.com
-    level: CAN_MANAGE
-
 targets:
   dev:
     default: true

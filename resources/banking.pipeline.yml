@@ -2,6 +2,12 @@ resources:
   pipelines:
     pipeline_banking_lakehouse_dev:
       name: banking_lakehouse_dev
+      permissions:
+        - user_name: sri@vdotx.com
+          level: IS_OWNER
+        - service_principal_name: 6127b219-86e3-4134-a5be-b31553ffa6fa
+          level: CAN_MANAGE
+
 
       configuration:
         banking.landing_path: /Volumes/banking_workspace/files/landing_external

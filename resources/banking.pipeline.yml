@@ -1,0 +1,20 @@
+resources:
+  pipelines:
+    pipeline_banking_lakehouse_dev:
+      name: banking_lakehouse_dev
+
+      configuration:
+        banking.landing_path: /Volumes/banking_workspace/files/landing_external
+        banking.catalog: banking_workspace
+        banking.env: dev
+
+      libraries:
+        - glob:
+            include: ../banking_lakehouse_dev/transformations/**
+
+      schema: bronze_dev
+      photon: true
+      catalog: banking_workspace
+      serverless: true
+
+      root_path: ../banking_lakehouse_dev

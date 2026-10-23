@@ -1,0 +1,53 @@
+name: Banking Lakehouse Dev CI-CD
+
+on:
+  push:
+    branches:
+      - feature/bronze-ingestion
+
+permissions:
+  contents: read
+
+concurrency:
+  group: banking-lakehouse-dev
+  cancel-in-progress: false
+
+jobs:
+  deploy-and-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      DATABRICKS_AUTH_TYPE: oauth-m2m
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+    steps:
+      - name: Download repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check Python syntax
+        run: python -m compileall -q banking_lakehouse_dev
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+        with:
+          version: "1.22.1"
+
+      - name: Check Databricks authentication
+        run: databricks current-user me
+
+      - name: Validate bundle
+        run: databricks bundle validate -t dev
+
+      - name: Deploy bundle
+        run: databricks bundle deploy -t dev --auto-approve
+
+      - name: Run banking pipeline
+        run: databricks bundle run pipeline_banking_lakehouse_dev -t dev

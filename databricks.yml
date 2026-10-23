@@ -2,10 +2,16 @@ bundle:
   name: banking_lakehouse
 
 include:
-  -resources/*.yml
+  - resources/*.yml
+
+permissions:
+  - service_principal_name: 6127b219-86e3-4134-a5be-b31553ffa6fa
+    level: CAN_MANAGE
+  - user_name: sri@vdotx.com
+    level: CAN_MANAGE
 
 targets:
   dev:
     default: true
     workspace:
-      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Users/sri@vdotx.com/.bundle/${bundle.name}/${bundle.target}
